@@ -1,0 +1,208 @@
+div.dm-wrapperDiv {
+  display: block;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0;
+  zoom: 1;
+  overflow: hidden;
+  width: 200px;
+  height: 100px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+}
+div.dm-wrapperDiv * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  zoom: 1;
+}
+div.dm-wrapperDiv div {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+div.dm-wrapperDiv div.dm-bgClrDiv,
+div.dm-wrapperDiv div.dm-maskDiv {
+  width: 200px;
+  height: 100px;
+}
+div.dm-wrapperDiv div.dm-bgClrDiv,
+div.dm-wrapperDiv div.dm-maskDiv {
+  -webkit-border-radius: 100px 100px 0 0;
+  -moz-border-radius: 100px 100px 0 0;
+  -ms-border-radius: 100px 100px 0 0;
+  border-radius: 100px 100px 0 0;
+  border: 2px solid #999999;
+  border-bottom: 0;
+  -webkit-transform-origin: center bottom;
+  -moz-transform-origin: center bottom;
+  -ms-transform-origin: center bottom;
+  transform-origin: center bottom;
+}
+div.dm-wrapperDiv div.dm-bgClrDiv.normal {
+  background-color: #4dcc4d;
+}
+div.dm-wrapperDiv div.dm-bgClrDiv.warn {
+  background-color: #A3DA34;
+}
+div.dm-wrapperDiv div.dm-bgClrDiv.error {
+  background-color: #e93838;
+}
+div.dm-wrapperDiv div.dm-maskDiv {
+  background-color: #dddddd;
+  z-index: 4;
+}
+div.dm-wrapperDiv div.dm-innerDiv {
+  bottom: 0;
+  left: 20px;
+  -webkit-border-radius: 80px 80px 0 0;
+  -moz-border-radius: 80px 80px 0 0;
+  -ms-border-radius: 80px 80px 0 0;
+  border-radius: 80px 80px 0 0;
+  border-bottom: 1px solid #eeeeee;
+  width: 160px;
+  height: 80px;
+  padding-top: .7em;
+  background-color: #eeeeee;
+  text-align: center;
+  text-transform: uppercase;
+  z-index: 5;
+}
+div.dm-wrapperDiv div.dm-innerDiv p {
+  margin: 3px auto;
+  width: auto;
+  max-width: 85%;
+  overflow: hidden;
+  text-align: center;
+}
+div.dm-wrapperDiv div.dm-innerDiv p.dm-valueP {
+  font-size: 210%;
+  line-height: .85;
+}
+div.dm-wrapperDiv div.dm-innerDiv p.dm-unitP {
+  margin-top: 0;
+  font-size: 75%;
+  font-weight: normal;
+}
+div.dm-wrapperDiv div.dm-innerDiv p.dm-labelP {
+  font-size: 100%;
+}
+s.find('.dm-maskDiv').css({
+                    '-webkit-transform': 'rotate(' + myDeg + 'deg)',
+                    '-ms-transform': 'rotate(' + myDeg + 'deg)',
+                    '-moz-transform': 'rotate(' + myDeg + 'deg)',
+                    'border-radius': 'rotate(' + myDeg + 'deg)'
+                });
+                // Set/update dm-value attr.
+                $this.data('dm-value', myVal);
+            }
+
+            // Initialize once.
+            if (!$this.hasClass('dm-wrapperDiv')) {
+                // Skip init if settings are invalid.
+                if (settings.value < settings.min ||
+                    settings.value > settings.max ||
+                    settings.min >= settings.max) {
+                    throw new Error("DynaMeter initialization failed -- invalid value/min/max settings.");
+                }
+                var currClrRef;
+                for (var key in settings.regions) {
+                    currClrRef = settings.regions[key];
+                    if (currClrRef != settings._clrRef0 &&
+                        currClrRef != settings._clrRef1 &&
+                        currClrRef != settings._clrRef2) {
+                        throw new Error("DynaMeter initialization failed -- invalid region color-key.");
+                    }
+                    if (key < settings.min || key > settings.max) {
+                        throw new Error("DynaMeter initialization failed -- invalid region value.");
+                    }
+                }
+
+                $this.addClass('dm-wrapperDiv');
+                $this.data('dm-id', ('dm-' + new Date().getTime()));
+                $this.data('dm-min', settings.min);
+                $this.data('dm-max', settings.max);
+                $this.data('dm-range', settings.max - settings.min);
+
+                $this.html('');
+                $this.append('<div class="dm-maskDiv"></div>');
+                $this.append('<div class="dm-innerDiv"></div>');
+
+                var $bgDiv = $this.find('div.dm-bgDiv');
+                var $maskDiv = $this.find('div.dm-maskDiv');
+                var $innerDiv = $this.find('div.dm-innerDiv');
+
+                $innerDiv.append('<p class="dm-valueP">' + settings.value + '</p>');
+                if (settings.unit) {
+                    $innerDiv.append('<p class="dm-unitP">' + settings.unit + '</p>');
+                }
+                $innerDiv.append('<p class="dm-labelP">' + settings.label + '</p>');
+
+                var $valueP = $this.find('p.dm-valueP');
+                var $unitP = $this.find('p.dm-unitP');
+                var $labelP = $this.find('p.dm-labelP');
+
+                var getAngleFromValue = function (myVal) {
+                    // Returns angle for canvas arc color-stops.
+                    if (myVal < settings.min || myVal > settings.max) {
+                        // console.log('[dynameter.getAngleFromValue] ERROR: myValue is outside value range!');
+                        return null;
+                    }
+                    return parseInt((myVal - $this.data('dm-min')) / $this.data('dm-range') * 180);
+                };
+
+                // Color stops for indicator color-bands [[angle, color-reference],...].
+                var colorStops = [];  // Color-ref by angle, based on settings.regions.
+                var keyIdx = 0;
+                for (var key2 in settings.regions) {
+                    // If there's no min-value starting region, prepend one using 'normal' as color-ref.
+                    if (keyIdx === 0 && key2 > settings.min) {
+                        colorStops.push([getAngleFromValue(settings.min), 'normal']);
+                        keyIdx++;
+                        // If starting region is still "normal" w/ non-min-value, skip this key.
+                        if (settings.regions[key2] == 'normal') {
+                            continue;
+                        }
+                    }
+                    colorStops.push([getAngleFromValue(key2), settings.regions[key2]]);
+                    keyIdx++;
+                }
+                var colorStopsLength = colorStops.length;
+
+                // Create and rotate color-bands for indicator background.
+                for (var i = 0; i < colorStopsLength; i++) {
+                    var myAngle = colorStops[i][0];
+                    var myClrRef = colorStops[i][1];
+                    $(document.createElement('div'))
+                        .addClass('dm-bgClrDiv ' + myClrRef)
+                        .css({
+                            '-webkit-transform': 'rotate(' + myAngle + 'deg)',
+                            '-moz-transform': 'rotate(' + myAngle + 'deg)',
+                            '-ms-transform': 'rotate(' + myAngle + 'deg)',
+                            'transform': 'rotate(' + myAngle + 'deg)',
+                            'zIndex': i + 1
+                        })
+                        .prependTo($this);
+                }
+
+                console.log('[dynameter] div#' + $this.attr('id') + ' initialized.');
+
+            }
+
+            updateValue(settings.value);
+
+        });
+
+
+ 
+    };
+ 
+}( jQuery ));
