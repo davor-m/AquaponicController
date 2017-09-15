@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>Aquaponic IoT Controler</title>
+    <link rel="stylesheet" href="webapp/webapp.css"/>
+    <link rel="stylesheet" type="text/css" href="webapp/plugins/jquery-dynameter/jquery.dynameter.css">
+    <!--    -->
+</head>
+<body>
+    <div class="title">Aquaponic IoT Controler</div>
+    <div class="container">
+        <div class="sub-title">Ambient Data</div>
+        <div class="gauge" id="lightGauge"></div>
+        <div class="gauge" id="tempGauge"></div>
+        <div class="clear"></div>
+    </div>
+    <div class="container">
+        <div class="sub-title">System Data</div>
+        <div class="gauge" id="lightSysGauge"></div>
+        <div class="gauge" id="flowRateGauge"></div>
+        <div class="flowCycle">
+            <div class="progressTitle">FLOW CYCLE PROGRESS</div>
+            <progress value="0" max="100"></progress>
+            <div class="progressTxt"></div>
+            <table class="flowTable">
+                <tr>
+                    <th colspan="3">Flow Cycle Statistic</th>
+                </tr>
+                <tr>
+                    <td>Last Duration: <span id="flowTimeLast"></span></td>
+                    <td>Average Duration: <span id="flowTimeAvg"></span></td>
+                    <td>Cycle Count: <span id="flowTimeCnt"></span></td>
+                </tr>
+            </table>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="container">
+        <div class="sub-title">Relay Status</div>
+        <div id="relay1" class="relay-container off">Water Pump</div>
+        <div id="relay2" class="relay-container off">Lights</div>
+        <div id="relay3" class="relay-container off">Air Pump</div>
+        <div id="relay4" class="relay-container off">Fan</div>
+        <div class="clear"></div>
+    </div>
+    <div class="container">
+        <div class="sub-title">Controls</div>
+        <div id="soundStop" class="controlButton">Stop Sound Alert</div>
+        <div id="resetFlow" class="controlButton">Reset Flow</div>
+    </div>
+
+    <div class="container">
+        <div class="sub-title">Event Log</div>
+        <div class="events-container">    
+            <ul id="events"></ul>
+        </div>
+    </div>
+    
+    <div class="container" style="position: relative;">
+        <div class="procSave"><div>Saving Settings</div></div>
+        <form action="">
+            <div class="sub-title">Light Settings</div>
+            <div class="item-set"><label>Starts at: </label><select id="lightStartHour">
+                                                              <option value="0">00:00</option>
+                                                              <option value="1">01:00</option>
+                                                              <option value="2">02:00</option>
+                                                              <option value="3">03:00</option>
+                                                              <option value="4">04:00</option>
+                                                              <option value="5">05:00</option>
+                                                              <option value="6">06:00</option>
+                                                              <option value="7">07:00</option>
+                                                              <option value="8">08:00</option>
+                                                              <option value="9">09:00</option>
+                                                              <option value="10">10:00</option>
+                                                              <option value="11">11:00</option>
+                                                              <option value="12">12:00</option>
+                                                              <option value="13">13:00</option>
+                                                              <option value="14">14:00</option>
+                                                              <option value="15">15:00</option>
+                                                              <option value="16">16:00</option>
+                                                              <option value="17">17:00</option>
+                                                              <option value="18">18:00</option>
+                                                              <option value="19">19:00</option>
+                                                              <option value="20">20:00</option>
+                                                              <option value="21">21:00</option>
+                                                              <option value="22">22:00</option>
+                                                              <option value="23">23:00</option>
+                                                            </select></div>
+            <div class="item-set"><label>End at: </label><select id="lightEndHour">
+                                                              <option value="0">00:00</option>
+                                                              <option value="1">01:00</option>
+                                                              <option value="2">02:00</option>
+                                                              <option value="3">03:00</option>
+                                                              <option value="4">04:00</option>
+                                                              <option value="5">05:00</option>
+                                                              <option value="6">06:00</option>
+                                                              <option value="7">07:00</option>
+                                                              <option value="8">08:00</option>
+                                                              <option value="9">09:00</option>
+                                                              <option value="10">10:00</option>
+                                                              <option value="11">11:00</option>
+                                                              <option value="12">12:00</option>
+                                                              <option value="13">13:00</option>
+                                                              <option value="14">14:00</option>
+                                                              <option value="15">15:00</option>
+                                                              <option value="16">16:00</option>
+                                                              <option value="17">17:00</option>
+                                                              <option value="18">18:00</option>
+                                                              <option value="19">19:00</option>
+                                                              <option value="20">20:00</option>
+                                                              <option value="21">21:00</option>
+                                                              <option value="22">22:00</option>
+                                                              <option value="23">23:00</option>
+                                                            </select></div>
+            <div class="item-set"><label>Minimum Light (%): </label><input type="text" value="" id="lightMinimum"></div>
+            <div class="sub-title">Water Pump Cycle</div>
+            <div class="item-set"><label>Liter per Cycle: </label><input type="text" value="" id="litersPerCycle"></div>
+            <div class="item-set"><label>Pause Cycle (minutes): </label><input type="text" value="" id="pauseCycle"></div>
+            <div colspan="6" class="sub-title">Temperature Control</div>
+            <div class="item-set"><label>Fan plugged in: </label><input type="radio" name="fanConnected" value="1"> Yes <input type="radio" name="fanConnected" value="0"> No</div>
+            <div class="item-set"><label>Max. Temperature: </label><input type="text" value="" id="temperatureMax"></div>
+            <div colspan="6" class="sub-title">Water Aeration</div>
+            <div class="item-set"><label>Air Pump plugged in: </label><input type="radio" name="airPumpConnected" value="1"> Yes <input type="radio" name="airPumpConnected" value="0"> No</div>
+            <div colspan="6" class="sub-title">Save Changes</div>
+            <div class="item-set"><label>Password: </label><input type="password" value="" id="pass"></div>
+            <button>Submit Settings</button>
+        </form>
+    </div>
+    
+    <div class="container footer">
+        Aquaponic IoT Controler version 1, Copyright (C) 2015 <a href="mailto:aquaponic.controller@gmail.com" target="_top">Davor Marjanović</a>
+    </div>
+    
+    <script src="webapp/plugins/jquery-1.11.3.min.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="webapp/plugins/jquery-dynameter/jquery.dynameter.js"></script>
+    <script src="webapp/webapp.js"></script>
+</body>
+</html>
