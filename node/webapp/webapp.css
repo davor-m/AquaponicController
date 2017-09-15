@@ -1,0 +1,220 @@
+/*
+    Aquaponic IoT Controler
+    Copyright (C) 2015  Davor Marjanović <aquaponic.controller@gmail.com>
+*/
+
+/*
+collors: 
+CEF483 yellow light
+A3DA34 yellow
+FF6060 red light
+E93838 red
+77DD77 green light
+4DCC4D green medium light
+2DBB2D green medium
+11A211 green les dark
+048004 green dark
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+.clear {clear:both;}
+
+body {
+    font:13px Helvetica, Arial;
+    color: #048004;
+}
+
+.title {
+    font-size: 2em;
+    font-weight: bold;
+    padding: 0.5em 0em 0.5em 0em;
+    text-align: center;
+    background-color: #4dcc4d;
+    color: white;
+    margin-bottom: 0.5em;
+}
+
+.container {
+    margin: auto;
+    max-width: 41em;
+}
+
+.sub-title {
+    font-size: 2em;
+    text-align: center;
+}
+
+.gauge{
+    float: left;
+    margin: 1em 2em;
+}
+
+.relay-container {
+    float: left;
+    line-height: 3em;
+    margin: 1em;
+    padding: 0.5em;
+    text-align: center;
+    width: 8em;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.off {
+    background-color: #E93838;
+    border: 1px solid #048004;
+}
+
+.on {
+    background-color: #4dcc4d;
+    border: 1px solid #048004;
+}
+
+.events-container {
+    border: 1px solid;
+    height: 14em;
+    margin-bottom: 15px;
+    overflow-y: auto;
+}
+
+form {
+    border: 1px solid;
+    padding: 10px;
+}
+
+form button {
+    width: 240px;
+    background: #4dcc4d;
+    font-weight: bold;
+    margin: 15px auto auto;
+    border: none;
+    color: #FFF;
+    cursor: pointer;
+    display: block;
+    padding: 10px 3px;
+}
+
+form > .sub-title{padding: 5px 0;}
+
+.item-set {text-align: center;}
+
+label{
+    display: inline-block;
+    padding-right: 5px;
+    text-align: right;
+    width: 145px;
+}
+
+input[type=text], select {
+    border: 1px solid #048004;
+    color: #048004;
+    margin-bottom: 2px;
+    text-align: center;
+    width: 60px;
+}
+
+.procSave {
+    background: rgba(20, 20, 20, 0.7) none repeat scroll 0 0;
+    height: 100%;
+    position: absolute;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    display: none;
+}
+
+.procSave > div {
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: calc(50% - 68px);
+}
+
+#events {
+    list-style-type: none;
+    margin: 0;
+    padding: 0
+}
+
+#events li {
+    padding: 5px 10px
+}
+
+#events li:nth-child(odd) {
+    background: #CEF483;
+}
+
+#events li span {
+    color: gray;
+    font-style: italic;
+}
+
+.flowCycle {
+  background-color: #eee;
+  float: left;
+  padding: 10px;
+  position: relative;
+  width: calc(100% - 20px);
+  margin-bottom: 20px;
+}
+
+.progressTitle {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 30px;
+  text-align: center;
+}
+
+progress {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  height: 25px;
+  position: relative;
+  width: 100%;
+}
+progress::-webkit-progress-bar {background-color: #ddd;}
+progress::-webkit-progress-value {background-color: #4dcc4d;}
+progress::-moz-progress-bar {background-color: #4dcc4d;}
+
+.progressTxt {
+  font-weight: bold;
+  left: calc(50% - 25px);
+  position: absolute;
+  top: 45px;
+}
+
+table.flowTable {
+  table-layout: fixed;
+  width: 100%;
+}
+.flowTable th {
+  line-height: 24px;
+}
+.flowTable td {
+  text-align: center;
+}
+
+.controlButton {
+  border: 1px solid;
+  cursor: pointer;
+  float: left;
+  margin: 0 1em 1em;
+  padding: 0.5em;
+  text-align: center;
+  width: calc(100% - 3em);
+}
+.controlButton:hover{
+    background-color: #4dcc4d;
+    color: white;
+}
+.container.footer {
+  font-size: 10px;
+  padding: 10px 0;
+}
